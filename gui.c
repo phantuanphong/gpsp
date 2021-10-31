@@ -629,7 +629,7 @@ typedef struct _menu_type menu_type;
   enable_disable_options,                                                     \
   &(cheats[number].cheat_active),                                             \
   2,                                                                          \
-  "Activate/deactivate this cheat code.",                                     \
+  "",                                     \
   number,                                                                     \
   STRING_SELECTION_OPTION                                                     \
 }                                                                             \
@@ -1103,7 +1103,7 @@ void get_savestate_snapshot(char *savestate_filename)
     };
     time_t savestate_time_flat;
     struct tm *current_time;
-    file_read_array(savestate_file, snapshot_buffer);
+    //file_read_array(savestate_file, snapshot_buffer);
     file_read_variable(savestate_file, savestate_time_flat);
 
     file_close(savestate_file);
@@ -1116,21 +1116,23 @@ void get_savestate_snapshot(char *savestate_filename)
      current_time->tm_hour, current_time->tm_min, current_time->tm_sec);
 
     savestate_timestamp_string[40] = 0;
+
     print_string(savestate_timestamp_string, COLOR_HELP_TEXT, COLOR_BG,
-     10, 40);
+    5, 40);
   }
   else
   {
     memset(snapshot_buffer, 0, 240 * 160 * 2);
+
     print_string_ext("No savestate in this slot.",
      0xFFFF, 0x0000, 15, 75, snapshot_buffer, 240, 0, 0, FONT_HEIGHT);
+
     print_string("---------- --/--/---- --:--:--          ", COLOR_HELP_TEXT,
-     COLOR_BG, 10, 40);
+     COLOR_BG, 5, 40);
   }
 
-#ifndef GP2X_BUILD
-  blit_to_screen(snapshot_buffer, 240, 160, 230, 40);
-#endif
+  //blit_to_screen(snapshot_buffer, 240, 160, 5, 5);
+
 }
 
 void get_savestate_filename_noshot(u32 slot, char *name_buffer)
@@ -1178,28 +1180,28 @@ u32 menu(u16 *original_screen)
 //#ifndef PC_BUILD
   static const char * const gamepad_help[] =
   {
-    "Up button on GBA d-pad.",
-    "Down button on GBA d-pad.",
-    "Left button on GBA d-pad.",
-    "Right button on GBA d-pad.",
-    "A button on GBA.",
-    "B button on GBA.",
-    "Left shoulder button on GBA.",
-    "Right shoulder button on GBA.",
-    "Start button on GBA.",
-    "Select button on GBA.",
-    "Brings up the options menu.",
-    "Toggles fastforward on/off.",
-    "Loads the game state from the current slot.",
-    "Saves the game state to the current slot.",
-    "Rapidly press/release the A button on GBA.",
-    "Rapidly press/release the B button on GBA.",
-    "Rapidly press/release the L shoulder on GBA.",
-    "Rapidly press/release the R shoulder on GBA.",
-    "Increases the volume.",
-    "Decreases the volume.",
-    "Displays virtual/drawn frames per second.",
-    "Does nothing."
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    // "Brings up the options menu.",
+    // "Toggles fastforward on/off.",
+    // "Loads the game state from the current slot.",
+    // "Saves the game state to the current slot.",
+    // "Rapidly press/release the A button on GBA.",
+    // "Rapidly press/release the B button on GBA.",
+    // "Rapidly press/release the L shoulder on GBA.",
+    // "Rapidly press/release the R shoulder on GBA.",
+    // "Increases the volume.",
+    // "Decreases the volume.",
+    // "Displays virtual/drawn frames per second.",
+    ""
   };
 
   static const char *gamepad_config_buttons[] =
@@ -1215,9 +1217,9 @@ u32 menu(u16 *original_screen)
     "START",
     "SELECT",
     /* Disabled for now */
-    /*"FASTFORWARD",
-    "LOAD STATE",
-    "SAVE STATE",*/
+    // "FASTFORWARD",
+    // "LOAD STATE",
+    // "SAVE STATE",
     "NOTHING"
   };
 //#endif
@@ -1337,17 +1339,17 @@ u32 menu(u16 *original_screen)
 
   void submenu_graphics_sound()
   {
-
+    print_string("Graphic & Sound Setting", COLOR_ROM_INFO, COLOR_BG, 6, 10);
   }
 
   void submenu_cheats_misc()
   {
-
+    print_string("Cheat Game", COLOR_ROM_INFO, COLOR_BG, 6, 10);
   }
 
   void submenu_gamepad()
   {
-		print_string("Input remapping menu", COLOR_ROM_INFO, COLOR_BG, 6, 10);
+		print_string("Remap Button", COLOR_ROM_INFO, COLOR_BG, 6, 10);
   }
 
   void submenu_analog()
@@ -1357,18 +1359,18 @@ u32 menu(u16 *original_screen)
 
   void submenu_savestate()
   {
-		print_string("Savestate options:", COLOR_ACTIVE_ITEM, COLOR_BG, 10, 70);
+		//print_string("Savestate options:", COLOR_ACTIVE_ITEM, COLOR_BG, 10, 70);
 		menu_change_state();
   }
 
   void submenu_main()
   {
-		print_string("Ported to Bittboy by Gameblabla", COLOR_ROM_INFO, COLOR_BG, 6, 184);
+		print_string("GPSP Rebuild by TreeTeam", COLOR_ROM_INFO, COLOR_BG, 6, 10);
 	  
-		strncpy(print_buffer, gamepak_filename, 80);
-		print_string(print_buffer, COLOR_ROM_INFO, COLOR_BG, 6, 10);
-		sprintf(print_buffer, "%s  %s  %s", gamepak_title, gamepak_code, gamepak_maker);
-		print_string(print_buffer, COLOR_ROM_INFO, COLOR_BG, 6, 20);
+		//strncpy(print_buffer, gamepak_filename, 80);
+		//print_string(print_buffer, COLOR_ROM_INFO, COLOR_BG, 6, 10);
+		//sprintf(print_buffer, "%s  %s  %s", gamepak_title, gamepak_code, gamepak_maker);
+		//print_string(print_buffer, COLOR_ROM_INFO, COLOR_BG, 6, 20);
 
 		get_savestate_filename_noshot(savestate_slot, current_savestate_filename);
   }
@@ -1384,87 +1386,34 @@ u32 menu(u16 *original_screen)
   // Marker for help information, don't go past this mark (except \n)------*
   menu_option_type graphics_sound_options[] = 
  {
-#ifndef RPI_BUILD
+
     string_selection_option(NULL, "Display scaling", scale_options,
      (u32 *)(&screen_scale),
      sizeof(scale_options) / sizeof(scale_options[0]),
-#ifndef GP2X_BUILD
-     "Determines how the GBA screen is resized in relation to the\n"
-     "entire screen."
-#ifdef PSP_BUILD
-     " Select unscaled 3:2 for GBA resolution, scaled 3:2 for GBA\n"
-     "aspect ratio scaled to fill the height of the PSP screen, and\n"
-     "fullscreen to fill the entire PSP screen."
-#endif
-#endif
-     "", 2),
-#endif
+     "", 0),
 
-#ifndef GP2X_BUILD
     string_selection_option(NULL, "Screen filtering", yes_no_options,
      (u32 *)(&screen_filter), 2,
-     "Determines whether or not filtering should be used when\n"
-     "scaling the screen. Selecting this will produce a more even and\n"
-     "smooth image, at the cost of being blurry and having less vibrant\n"
-     "colors.", 3),
-#endif
-#if defined (PND_BUILD)
-    string_selection_option(NULL, "Scaling filter", filter2_options,
-     (u32 *)(&screen_filter2),
-     sizeof(filter2_options) / sizeof(filter2_options[0]),
-     "Optional pixel art scaling filter", 4),
-#endif
+     "", 1),
+
     string_selection_option(NULL, "Frameskip type", frameskip_options,
      (u32 *)(&current_frameskip_type), 3,
-#ifndef GP2X_BUILD
-     "Determines what kind of frameskipping to use.\n"
-     "Frameskipping may improve emulation speed of many games.\n"
-#endif
-     "Off: Do not skip any frames.\n"
-     "Auto: Skip up to N frames (see next opt) as needed.\n"
-     "Manual: Always render only 1 out of N + 1 frames."
-     , 5),
-    numeric_selection_option(NULL, "Frameskip value", &frameskip_value, 100,
-#ifndef GP2X_BUILD
-     "For auto frameskip, determines the maximum number of frames that\n"
-     "are allowed to be skipped consecutively.\n"
-     "For manual frameskip, determines the number of frames that will\n"
-     "always be skipped."
-#endif
-     "", 6),
-    string_selection_option(NULL, "Framskip variation",
-     frameskip_variation_options, &random_skip, 2,
-#ifndef GP2X_BUILD
-     "If objects in the game flicker at a regular rate certain manual\n"
-     "frameskip values may cause them to normally disappear. Change this\n"
-     "value to 'random' to avoid this. Do not use otherwise, as it tends\n"
-     "to make the image quality worse, especially in high motion games."
-#endif
-     "", 7),
+     "", 2),
+
+    string_selection_option(NULL, "Framskip variation",frameskip_variation_options, 
+    &random_skip, 2,
+     "", 3),
+
     string_selection_option(NULL, "Audio output", yes_no_options,
      &global_enable_audio, 2,
-     "Select 'no' to turn off all audio output. This will\n"
-     "not result in a significant change in performance.", 9),
-#ifndef PSP_BUILD
+     "", 5),
+
     string_selection_option(NULL, "Audio buffer", audio_buffer_options,
              &audio_buffer_size_number, 11,
-#else
-    string_selection_option(NULL, "Audio buffer", audio_buffer_options,
-             &audio_buffer_size_number, 10,
-#endif
+             "",
+     6),
 
-#ifdef PSP_BUILD
-     "Set the size (in bytes) of the audio buffer. Larger values may result\n"
-     "in slightly better performance at the cost of latency; the lowest\n"
-     "value will give the most responsive audio.\n"
-     "This option requires gpSP to be restarted before it will take effect.",
-#else
-     "Set the size (in bytes) of the audio buffer.\n"
-     "This option requires gpSP restart to take effect.\n"
-     "Settable values may be limited by SDL implementation.",
-#endif
-     10),
-    submenu_option(NULL, "Back", "Return to the main menu.", 12)
+    submenu_option(NULL, "Back", "", 9)
   };
 
   make_menu(graphics_sound, submenu_graphics_sound, NULL);
@@ -1481,56 +1430,30 @@ u32 menu(u16 *original_screen)
     cheat_option(7),
     cheat_option(8),
     cheat_option(9),
-#if defined(PSP_BUILD) || defined(GP2X_BUILD)
-    string_selection_option(NULL, "Clock speed",
-     clock_speed_options, &clock_speed_number,
-     sizeof(clock_speed_options) / sizeof(clock_speed_options[0]),
-     "Change the clock speed of the device. Higher clock\n"
-     "speed will yield better performance, but will drain\n"
-     "battery life further.", 11),
-#endif
     string_selection_option(NULL, "Update backup",
      update_backup_options, &update_backup_flag, 2,
-#ifdef GP2X_BUILD
-     "Determines when in-game save files should be\n"
-     "written back to SD card."
-#else
-     "Determines when in-game save files should be written back to\n"
-     "card. If set to 'automatic' writebacks will occur shortly after\n"
-     "the game's backup is altered. On 'exit only' it will only be\n"
-     "written back when you exit from this menu.\n"
-#ifdef PSP
-     "(NOT from using the home button), use the latter with extreme care."
-#endif
-#endif
-     "", 12),
-    submenu_option(NULL, "Back", "Return to the main menu.", 14)
+     "", 11),
+    submenu_option(NULL, "Back", "", 14)
   };
 
   make_menu(cheats_misc, submenu_cheats_misc, NULL);
 
   menu_option_type savestate_options[] =
   {
+    numeric_selection_option(menu_change_state,
+     "Current slot", &savestate_slot, 10,
+     "", 5),
     numeric_selection_action_hide_option(menu_load_state, menu_change_state,
-     "Load savestate from current slot", &savestate_slot, 10,
-     "Select to load the game state from the current slot\n"
-     "for this game.\n"
-     "Press left + right to change the current slot.", 6),
+     "Load save", &savestate_slot, 10,
+     "", 7),
     numeric_selection_action_hide_option(menu_save_state, menu_change_state,
-     "Save savestate to current slot", &savestate_slot, 10,
-     "Select to save the game state to the current slot\n"
-     "for this game.\n"
-     "Press left + right to change the current slot.", 7),
+     "Save save", &savestate_slot, 10,
+     "", 8),
     numeric_selection_action_hide_option(menu_load_state_file,
       menu_change_state,
-     "Load savestate from file", &savestate_slot, 10,
-     "Restore gameplay from a savestate file.\n"
-     "Note: The same file used to save the state must be\n"
-     "present.\n", 9),
-    numeric_selection_option(menu_change_state,
-     "Current savestate slot", &savestate_slot, 10,
-     "Change the current savestate slot.\n", 11),
-    submenu_option(NULL, "Back", "Return to the main menu.", 13)
+     "Load from file", &savestate_slot, 10,
+     "", 10),
+    submenu_option(NULL, "Back", "", 13)
   };
 
   make_menu(savestate, submenu_savestate, NULL);
@@ -1644,7 +1567,7 @@ u32 menu(u16 *original_screen)
     gamepad_config_option("Right Trigger", 9),
     gamepad_config_option("Start        ", 10),
     gamepad_config_option("Select       ", 11),
-    submenu_option(NULL, "Back", "Return to the main menu.", 12)
+    submenu_option(NULL, "Back", "Return to the main menu.", 13)
   };
 
   /*menu_option_type analog_config_options[] =
@@ -1659,48 +1582,49 @@ u32 menu(u16 *original_screen)
 
   menu_option_type main_options[] =
   {
-    submenu_option(&graphics_sound_menu, "Graphics and Sound options",
-     "Select to set display parameters and frameskip\n"
-     "behavior, audio on/off, buffer size, and filtering.", 0),
+
+
     numeric_selection_action_option(menu_load_state, NULL,
-     "Load state from slot", &savestate_slot, 10,
-     "Select to load the game state from the current slot\n"
-     "for this game, if it exists.\n"
-     "Press left + right to change the current slot.", 2),
+     "Load state", &savestate_slot, 10,
+     "", 0),
+
     numeric_selection_action_option(menu_save_state, NULL,
-     "Save state to slot", &savestate_slot, 10,
-     "Select to save the game state to the current slot\n"
-     "for this game. See the extended menu for more info.\n"
-     "Press left + right to change the current slot.", 3),
-    submenu_option(&savestate_menu, "Savestate options",
-     "Select to enter a menu for loading, saving, and\n"
-     "viewing the currently active savestate for this game\n"
-     "(or to load a savestate file from another game)", 4),
-    submenu_option(&gamepad_config_menu, "Configure gamepad input",
-     "Select to change the in-game behavior of buttons\n"
-     "and d-pad.", 6),
-#ifndef WIZ_BUILD
-    /*submenu_option(&analog_config_menu, "Configure analog input",
-     "Select to change the in-game behavior of the analog nub.", 7),*/
-#endif
-    submenu_option(&cheats_misc_menu, "Cheats and Miscellaneous options",
-     "Select to manage cheats, set backup behavior,\n"
-     "and set device clock speed.", 7),
+     "Save state", &savestate_slot, 10,
+     "", 1),
+
+    // submenu_option(&savestate_menu, "Save options",
+    //  "", 2),
+
+
+    numeric_selection_action_hide_option(menu_load_state_file,
+      menu_change_state,
+     "Load save file", &savestate_slot, 10,
+     "", 2),
+
+
+    submenu_option(&graphics_sound_menu, "Graphics & Sound Setting",
+     "", 4),
+
+    submenu_option(&gamepad_config_menu, "Remap button",
+     "", 5),
+
+    submenu_option(&cheats_misc_menu, "Cheat game",
+     "", 7),
+
     action_option(menu_load, NULL, "Load new game",
-     "Select to load a new game\n"
-     "(will exit a game if currently playing).", 8),
+     "", 8),
+
     action_option(menu_restart, NULL, "Restart game",
-     "Select to reset the GBA with the current game\n"
-     "loaded.", 9),
-    action_option(menu_exit, NULL, "Return to game",
-     "Select to exit this menu and resume gameplay.", 10),
+     "", 9),
+
+    //action_option(menu_exit, NULL, "Return to game","", 10),
      
-    numeric_selection_action_option(menu_bios, NULL,
-     "Boot to BIOS : ", &BootBIOS, 2,
-     "0 for no, 1 for YES", 11),
+    // numeric_selection_action_option(menu_bios, NULL,
+    //  "Boot to BIOS : ", &BootBIOS, 2,
+    //  "", 9),
      
-    action_option(menu_quit, NULL, "Exit gpSP",
-     "Select to exit gpSP and return to the menu.", 13)
+    action_option(menu_quit, NULL, "Exit",
+     "", 12)
   };
 
   make_menu(main, submenu_main, NULL);
