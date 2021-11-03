@@ -61,6 +61,7 @@ typedef enum
 
 #define BUTTON_REPEAT_START    200000
 #define BUTTON_REPEAT_CONTINUE 50000
+#define BUTTON_REPEAT_RATE 200000
 
 button_repeat_state_type button_repeat_state = BUTTON_NOT_HELD;
 u32 button_repeat = 0;
@@ -688,7 +689,7 @@ u32 key_map(u32 key_sym)
     case SDLK_LCTRL:
       return tokey(4);
 
-    case SDLK_LALT: // A
+    case SDLK_LALT:
       return tokey(5);
       
     case SDLK_LSHIFT:
@@ -762,8 +763,7 @@ gui_action_type get_gui_input()
       {
         switch(event.key.keysym.sym)
         {
-          case SDLK_ESCAPE: // nut select
-          //case SDLK_LCTRL: // nut B
+          case SDLK_ESCAPE: 
             gui_action = CURSOR_EXIT;
             break;
 
@@ -783,9 +783,7 @@ gui_action_type get_gui_input()
             gui_action = CURSOR_RIGHT;
             break;
 
-          //case SDLK_LALT: //nut A
-          case SDLK_RETURN: // nut start
-          //case SDLK_LCTRL: // nut B
+          case SDLK_RETURN:
             gui_action = CURSOR_SELECT;
             break;
 
@@ -838,14 +836,57 @@ gui_action_type get_gui_input()
   return gui_action;
 }
 
+
+
+u32 isAutoFireOnA = 0;
+u32 isAutoFireOnB = 0;
+u64 lastTickOnA = 0;
+u64 lastTickOnB = 0;
+
 u32 update_input()
 {
+
   SDL_Event event;
-  
+
   io_registers[REG_P1] = (~key) & 0x3FF;
-  
+
+  if (isAutoFireOnA == 1)
+  {
+    u64 new_ticks;
+    get_ticks_us(&new_ticks);
+
+    if (new_ticks - lastTickOnA > BUTTON_REPEAT_RATE)
+    {
+      get_ticks_us(&lastTickOnA);
+      key |= key_map(SDLK_LALT);
+      trigger_key(key);
+    }
+    else
+    {
+      key &= ~(key_map(SDLK_LALT));
+    }
+  }
+
+  if (isAutoFireOnB == 1)
+  {
+    u64 new_ticks;
+    get_ticks_us(&new_ticks);
+
+    if (new_ticks - lastTickOnB > BUTTON_REPEAT_RATE)
+    {
+      get_ticks_us(&lastTickOnB);
+      key |= key_map(SDLK_LCTRL);
+      trigger_key(key);
+    }
+    else
+    {
+      key &= ~(key_map(SDLK_LCTRL));
+    }
+  }
+
   while(SDL_PollEvent(&event))
   {
+
     switch(event.type)
     {
       case SDL_QUIT:
@@ -893,16 +934,21 @@ u32 update_input()
           return 1;
         }
         else
+        {
 
-        if(event.key.keysym.sym == SDLK_BACKQUOTE)
-        {
-          synchronize_flag ^= 1;
-        }
-        else
-        {
-          key |= key_map(event.key.keysym.sym);
-          trigger_key(key);
-          
+          if (event.key.keysym.sym == SDLK_LSHIFT)
+          {
+            isAutoFireOnA = 1;
+          }
+          else if (event.key.keysym.sym == SDLK_SPACE)
+          {
+            isAutoFireOnB = 1;
+          }
+          else
+          {
+            key |= key_map(event.key.keysym.sym);
+            trigger_key(key);
+          }
         }
 
         break;
@@ -910,7 +956,19 @@ u32 update_input()
 
       case SDL_KEYUP:
       {
-        key &= ~(key_map(event.key.keysym.sym));
+        if (event.key.keysym.sym == SDLK_LSHIFT)
+        {
+          isAutoFireOnA = 0;
+        }
+        else if (event.key.keysym.sym == SDLK_SPACE)
+        {
+          isAutoFireOnB = 0;
+        }
+        else
+        {
+          key &= ~(key_map(event.key.keysym.sym));
+        }
+
         break;
       }
     }

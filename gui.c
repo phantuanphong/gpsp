@@ -1349,7 +1349,7 @@ u32 menu(u16 *original_screen)
 
   void submenu_gamepad()
   {
-		print_string("Remap Button", COLOR_ROM_INFO, COLOR_BG, 6, 10);
+		print_string("Button Config", COLOR_ROM_INFO, COLOR_BG, 6, 10);
   }
 
   void submenu_analog()
@@ -1567,7 +1567,7 @@ u32 menu(u16 *original_screen)
     gamepad_config_option("Right Trigger", 9),
     gamepad_config_option("Start        ", 10),
     gamepad_config_option("Select       ", 11),
-    submenu_option(NULL, "Back", "Return to the main menu.", 13)
+    submenu_option(NULL, "Back", "", 13)
   };
 
   /*menu_option_type analog_config_options[] =
@@ -1605,7 +1605,7 @@ u32 menu(u16 *original_screen)
     submenu_option(&graphics_sound_menu, "Graphics & Sound Setting",
      "", 4),
 
-    submenu_option(&gamepad_config_menu, "Remap button",
+    submenu_option(&gamepad_config_menu, "Button config",
      "", 5),
 
     submenu_option(&cheats_misc_menu, "Cheat game",
