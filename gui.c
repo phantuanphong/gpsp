@@ -1365,7 +1365,7 @@ u32 menu(u16 *original_screen)
 
   void submenu_main()
   {
-		print_string("GPSP Rebuild by TreeTeam", COLOR_ROM_INFO, COLOR_BG, 6, 10);
+		print_string("GPSP rebuild by TreeTeam", COLOR_ROM_INFO, COLOR_BG, 6, 10);
 	  
 		//strncpy(print_buffer, gamepak_filename, 80);
 		//print_string(print_buffer, COLOR_ROM_INFO, COLOR_BG, 6, 10);

@@ -688,7 +688,7 @@ u32 key_map(u32 key_sym)
     case SDLK_LCTRL:
       return tokey(4);
 
-    case SDLK_LALT:
+    case SDLK_LALT: // A
       return tokey(5);
       
     case SDLK_LSHIFT:
@@ -762,7 +762,8 @@ gui_action_type get_gui_input()
       {
         switch(event.key.keysym.sym)
         {
-          case SDLK_ESCAPE:
+          case SDLK_ESCAPE: // nut select
+          //case SDLK_LCTRL: // nut B
             gui_action = CURSOR_EXIT;
             break;
 
@@ -782,14 +783,15 @@ gui_action_type get_gui_input()
             gui_action = CURSOR_RIGHT;
             break;
 
-          case SDLK_RETURN:
-          case SDLK_LCTRL:
+          //case SDLK_LALT: //nut A
+          case SDLK_RETURN: // nut start
+          //case SDLK_LCTRL: // nut B
             gui_action = CURSOR_SELECT;
             break;
 
-          case SDLK_LALT:
-            gui_action = CURSOR_BACK;
-            break;
+          // case SDLK_LALT:
+          //   gui_action = CURSOR_BACK;
+          //   break;
 	 default:
 	    break;
       }
