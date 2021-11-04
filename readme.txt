@@ -1,3 +1,9 @@
+NOTE: Support for Powkiddy Q90
+
+1.Clean UI
+2.Add auto fire for button A, B
+
+================================================
 Here's a simple port of GPSP for the new Bittboy.
 Seems to work fine right now, apart from the R button.
 No idea to what it is mapped to ?
