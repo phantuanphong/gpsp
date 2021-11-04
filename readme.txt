@@ -1,7 +1,9 @@
-NOTE: Support for Powkiddy Q90
+Support for Powkiddy Q90
+Clean UI
+Add auto fire for button A, B
 
-1.Clean UI
-2.Add auto fire for button A, B
+How to use?
+I don't provider gba_bios.bin file, please download on internet and put gba_bios.bin file at root gpsp folder.
 
 ================================================
 Here's a simple port of GPSP for the new Bittboy.
