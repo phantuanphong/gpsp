@@ -6,12 +6,12 @@
 
 # Global definitions
 
-CC        = /opt/miyoo/bin/arm-linux-gcc
+CC		= /opt/miyoo/bin/arm-linux-gcc
 
-OBJS      = main.o cpu.o memory.o video.o input.o sound.o gui.o \
-            cheats.o zip.o  arm_stub.o  warm.o cpu_threaded.o video_blend.o sha1.o imageio.o
+OBJS   = main.o cpu.o memory.o video.o input.o sound.o gui.o \
+			cheats.o zip.o  arm_stub.o  warm.o cpu_threaded.o video_blend.o sha1.o imageio.o
 
-BIN       = gpsp
+OUT     = gpsp
 
 # Platform specific definitions 
 
@@ -26,16 +26,16 @@ LIBS       = -lc -lgcc -lSDL -lpng -lasound -lz -Wl,--as-needed -Wl,--gc-section
 
 # Compilation:
 
-all: $(BIN)
+all: $(OUT)
 
 %.o: %.S
 	$(CC) $(CFLAGS) -c -o $@ $<
-
-
+ 
 cpu.o cpu_threaded.o: CFLAGS += -Wno-unused-variable -Wno-unused-label
 
-$(BIN): $(OBJS)
-	$(CC) $(OBJS) $(LIBS) -o $(BIN)
+$(OUT): $(OBJS)
+	$(CC) $(OBJS) $(LIBS) -o $(OUT)
+
 
 clean:
-	rm -f *.o $(BIN)
+	rm -f *.o $(OUT)
